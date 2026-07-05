@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Furr Family Finances</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<style>
+  :root {
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1e2430; --muted:#6b7280;
+    --line:#e5e7eb; --accent:#2563eb; --green:#059669; --red:#dc2626;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  #lock { max-width:360px; margin:18vh auto; background:var(--card); border:1px solid var(--line);
+          border-radius:12px; padding:32px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+  #lock h1 { font-size:1.25rem; margin:0 0 6px; }
+  #lock p { color:var(--muted); font-size:.85rem; margin:0 0 18px; }
+  #pw { width:100%; padding:10px 12px; font-size:1rem; border:1px solid var(--line); border-radius:8px; }
+  #unlockBtn { width:100%; margin-top:12px; padding:10px; font-size:1rem; border:0; border-radius:8px;
+               background:var(--accent); color:#fff; cursor:pointer; }
+  #unlockBtn:disabled { opacity:.6; }
+  #lockErr { color:var(--red); font-size:.85rem; min-height:1.2em; margin-top:10px; }
+  label.remember { display:flex; gap:6px; justify-content:center; align-items:center;
+                   font-size:.8rem; color:var(--muted); margin-top:12px; }
+  #app { display:none; max-width:1200px; margin:0 auto; padding:20px 16px 60px; }
+  header.top { display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  header.top h1 { font-size:1.35rem; margin:0; }
+  .range { display:flex; gap:8px; align-items:center; font-size:.85rem; color:var(--muted); }
+  .range select { padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:#fff; font-size:.85rem; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:18px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .kpi .lbl { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .kpi .val { font-size:1.45rem; font-weight:600; margin-top:4px; }
+  .kpi .sub { font-size:.75rem; color:var(--muted); margin-top:2px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:18px; }
+  .card h2 { font-size:1rem; margin:0 0 4px; }
+  .card .note { font-size:.78rem; color:var(--muted); margin:0 0 10px; }
+  table { border-collapse:collapse; width:100%; font-size:.8rem; }
+  th,td { padding:6px 8px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; }
+  thead th { position:sticky; top:0; background:var(--card); }
+  .scroll { overflow:auto; max-height:420px; }
+  .pos { color:var(--green); } .neg { color:var(--red); }
+  .filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .filters input, .filters select { padding:6px 8px; border:1px solid var(--line); border-radius:6px; font-size:.85rem; }
+  .filters input { flex:1; min-width:160px; }
+  footer { text-align:center; color:var(--muted); font-size:.75rem; }
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <h1>Furr Family Finances</h1>
+  <p>Enter the family passcode to unlock.</p>
+  <input id="pw" type="password" placeholder="Passcode" autofocus>
+  <button id="unlockBtn">Unlock</button>
+  <label class="remember"><input type="checkbox" id="remember"> Remember on this device</label>
+  <div id="lockErr"></div>
+</div>
+
+<div id="app">
+  <header class="top">
+    <h1>Furr Family Finances</h1>
+    <div class="range">
+      <span>From</span><select id="mFrom"></select>
+      <span>to</span><select id="mTo"></select>
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Income</div><div class="val pos" id="kIncome"></div><div class="sub" id="kIncomeAvg"></div></div>
+    <div class="kpi"><div class="lbl">Spending</div><div class="val neg" id="kSpend"></div><div class="sub" id="kSpendAvg"></div></div>
+    <div class="kpi"><div class="lbl">Net</div><div class="val" id="kNet"></div><div class="sub" id="kNetAvg"></div></div>
+    <div class="kpi"><div class="lbl">To Savings &amp; Investments</div><div class="val" id="kSave"></div><div class="sub">excluded from spending</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Where the money goes</h2>
+    <p class="note" id="sankeyNote"></p>
+    <div id="sankey" style="height:520px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Income vs. spending by month</h2>
+    <div id="trend" style="height:380px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Spending by category by month</h2>
+    <p class="note">Click legend entries to hide/show categories. Double-click to isolate one.</p>
+    <div id="catTrend" style="height:420px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Monthly breakdown</h2>
+    <div class="scroll"><table id="matrix"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Transactions</h2>
+    <div class="filters">
+      <input id="q" placeholder="Search description...">
+      <select id="fCat"><option value="">All categories</option></select>
+    </div>
+    <div class="scroll"><table id="txns"></table></div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const fmt = n => (n<0?"-":"") + "$" + Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
+const fmt2 = n => (n<0?"-":"") + "$" + Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// ---------- decryption ----------
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decrypt(blob, pass) {
+  const keyMat = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey(
+    {name:"PBKDF2", salt:b64(blob.salt), iterations:blob.iter, hash:"SHA-256"},
+    keyMat, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({name:"AES-GCM", iv:b64(blob.iv)}, key, b64(blob.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
+let DATA=null, MONTHS=[], TXNS=[];
+let incomeCats=new Set(), transferCats=new Set();
+
+async function tryUnlock(pass, silent) {
+  $("unlockBtn").disabled = true;
+  try {
+    const blob = await (await fetch("data.enc", {cache:"no-store"})).json();
+    DATA = await decrypt(blob, pass);
+    if ($("remember").checked || silent) localStorage.setItem("fdpass", pass);
+    $("lock").style.display="none"; $("app").style.display="block";
+    init();
+  } catch(e) {
+    if (!silent) $("lockErr").textContent = "Wrong passcode (or data file missing).";
+    localStorage.removeItem("fdpass");
+  }
+  $("unlockBtn").disabled = false;
+}
+$("unlockBtn").onclick = () => tryUnlock($("pw").value, false);
+$("pw").addEventListener("keydown", e => { if (e.key==="Enter") tryUnlock($("pw").value, false); });
+const saved = localStorage.getItem("fdpass");
+if (saved) tryUnlock(saved, true);
+
+// ---------- data prep ----------
+function init() {
+  TXNS = DATA.transactions;
+  transferCats = new Set(DATA.transferCats);
+  // Until credit-card statements are added, card payments from checking ARE the
+  // card spending, so count them as an expense. Once *-cc sources exist, they
+  // become a transfer (the card transactions carry the real categories).
+  const hasCC = TXNS.some(t => (t.src||"").includes("-cc"));
+  if (!hasCC) transferCats.delete("Credit Card Payments");
+  const pref = DATA.incomePrefixes;
+  incomeCats = new Set([...new Set(TXNS.map(t=>t.cat))].filter(c => pref.some(p=>c.startsWith(p))));
+
+  MONTHS = [...new Set(TXNS.map(t=>t.d.slice(0,7)))].sort();
+  for (const sel of [$("mFrom"), $("mTo")]) {
+    sel.innerHTML = MONTHS.map(m=>`<option>${m}</option>`).join("");
+    sel.onchange = render;
+  }
+  $("mTo").value = MONTHS[MONTHS.length-1];
+
+  const cats = [...new Set(TXNS.map(t=>t.cat))].sort();
+  $("fCat").innerHTML += cats.map(c=>`<option>${c}</option>`).join("");
+  $("q").oninput = renderTxns; $("fCat").onchange = renderTxns;
+
+  $("foot").textContent = `Data through ${TXNS[TXNS.length-1].d} - generated ${DATA.generated} - ${TXNS.length} transactions`;
+  render();
+}
+
+const inRange = t => { const m=t.d.slice(0,7); return m >= $("mFrom").value && m <= $("mTo").value; };
+
+function catType(c) {
+  if (transferCats.has(c)) return "transfer";
+  if (incomeCats.has(c)) return "income";
+  return "expense";
+}
+
+function render() {
+  const sel = TXNS.filter(inRange);
+  const months = MONTHS.filter(m => m >= $("mFrom").value && m <= $("mTo").value);
+  const nM = Math.max(months.length,1);
+
+  // per-category net over range; per-category-per-month
+  const net = {}, byMonth = {};
+  for (const t of sel) {
+    net[t.cat] = (net[t.cat]||0) + t.amt;
+    (byMonth[t.cat] = byMonth[t.cat] || {})[t.d.slice(0,7)] = (byMonth[t.cat]?.[t.d.slice(0,7)]||0) + t.amt;
+  }
+
+  let income=0, spend=0, save=0;
+  for (const [c,v] of Object.entries(net)) {
+    const ty = catType(c);
+    if (ty==="transfer") { if (c==="Savings & Investments" && v<0) save += -v; continue; }
+    if (ty==="income") income += v;
+    else spend += v;   // negative
+  }
+  spend = -spend;
+  const netTotal = income - spend;
+  $("kIncome").textContent = fmt(income);   $("kIncomeAvg").textContent = fmt(income/nM)+" / month";
+  $("kSpend").textContent  = fmt(spend);    $("kSpendAvg").textContent  = fmt(spend/nM)+" / month";
+  $("kNet").textContent = fmt(netTotal);    $("kNet").className = "val " + (netTotal>=0?"pos":"neg");
+  $("kNetAvg").textContent = fmt(netTotal/nM)+" / month";
+  $("kSave").textContent = fmt(save);
+
+  drawSankey(net, income, spend);
+  drawTrend(months, byMonth);
+  drawCatTrend(months, byMonth);
+  drawMatrix(months, byMonth, net);
+  renderTxns();
+}
+
+// ---------- sankey ----------
+function drawSankey(net, income, spend) {
+  // Sources: income categories (+ refund-positive expense cats). Sinks: expense cats with net outflow.
+  const srcs=[], sinks=[];
+  for (const [c,v] of Object.entries(net)) {
+    if (catType(c)==="transfer") continue;
+    if (v>0) srcs.push([c,v]); else if (v<0) sinks.push([c,-v]);
+  }
+  srcs.sort((a,b)=>b[1]-a[1]); sinks.sort((a,b)=>b[1]-a[1]);
+  const totalIn = srcs.reduce((s,x)=>s+x[1],0), totalOut = sinks.reduce((s,x)=>s+x[1],0);
+  if (totalIn > totalOut) sinks.push(["Net saved", totalIn-totalOut]);
+  else if (totalOut > totalIn) srcs.push(["From savings/balance", totalOut-totalIn]);
+
+  const labels = [...srcs.map(s=>s[0]), "Household", ...sinks.map(s=>s[0])];
+  const S=srcs.length, mid=S;
+  const link = {source:[],target:[],value:[]};
+  srcs.forEach((s,i)=>{ link.source.push(i); link.target.push(mid); link.value.push(s[1]); });
+  sinks.forEach((s,i)=>{ link.source.push(mid); link.target.push(mid+1+i); link.value.push(s[1]); });
+
+  const palette = ["#2563eb","#059669","#d97706","#dc2626","#7c3aed","#0891b2","#be185d","#4d7c0f",
+                   "#b45309","#1d4ed8","#9333ea","#0d9488","#e11d48","#65a30d","#c2410c","#6366f1",
+                   "#0284c7","#a21caf","#15803d","#f59e0b"];
+  Plotly.newPlot("sankey", [{
+    type:"sankey", orientation:"h",
+    node:{ pad:12, thickness:16, label:labels,
+           color:labels.map((_,i)=> i===mid ? "#334155" : palette[i % palette.length]) },
+    link:{ ...link, color:"rgba(100,116,139,.25)",
+           hovertemplate:"%{source.label} → %{target.label}<br>$%{value:,.0f}<extra></extra>" }
+  }], {margin:{l:10,r:10,t:10,b:10}, font:{size:12}}, {displayModeBar:false, responsive:true});
+  $("sankeyNote").textContent = `Selected period: ${fmt(income)} in, ${fmt(spend)} out. Transfers between accounts (${[...transferCats].join(", ")}) are excluded.`;
+}
+
+// ---------- trends ----------
+function monthSeries(months, byMonth, filterFn, sign=1) {
+  return months.map(m => {
+    let s=0;
+    for (const [c,mm] of Object.entries(byMonth)) if (filterFn(c)) s += (mm[m]||0);
+    return sign*s;
+  });
+}
+function drawTrend(months, byMonth) {
+  const inc = monthSeries(months, byMonth, c=>catType(c)==="income");
+  const sp  = monthSeries(months, byMonth, c=>catType(c)==="expense", -1);
+  const net = months.map((_,i)=> inc[i]-sp[i]);
+  Plotly.newPlot("trend", [
+    {x:months, y:inc, name:"Income",  mode:"lines+markers", line:{color:"#059669",width:3}},
+    {x:months, y:sp,  name:"Spending",mode:"lines+markers", line:{color:"#dc2626",width:3}},
+    {x:months, y:net, name:"Net",     mode:"lines+markers", line:{color:"#2563eb",width:2,dash:"dot"}},
+  ], {margin:{l:60,r:20,t:10,b:40}, yaxis:{tickprefix:"$",tickformat:","}, hovermode:"x unified",
+      legend:{orientation:"h",y:1.12}}, {displayModeBar:false, responsive:true});
+}
+function drawCatTrend(months, byMonth) {
+  const cats = Object.entries(byMonth)
+    .filter(([c])=>catType(c)==="expense")
+    .map(([c,mm]) => [c, -Object.values(mm).reduce((a,b)=>a+b,0)])
+    .sort((a,b)=>b[1]-a[1]);
+  const traces = cats.map(([c],i) => ({
+    x:months, y:months.map(m=>-(byMonth[c][m]||0)), name:c, mode:"lines+markers",
+    visible: i<8 ? true : "legendonly"
+  }));
+  Plotly.newPlot("catTrend", traces,
+    {margin:{l:60,r:20,t:10,b:40}, yaxis:{tickprefix:"$",tickformat:","}, hovermode:"closest",
+     legend:{orientation:"h",y:-0.18}}, {displayModeBar:false, responsive:true});
+}
+
+// ---------- tables ----------
+function drawMatrix(months, byMonth, net) {
+  const rows = Object.keys(net).sort((a,b)=>{
+    const ord = c => catType(c)==="income"?0:catType(c)==="expense"?1:2;
+    return ord(a)-ord(b) || Math.abs(net[b])-Math.abs(net[a]);
+  });
+  let h = "<thead><tr><th>Category</th>" + months.map(m=>`<th>${m}</th>`).join("") + "<th>Total</th></tr></thead><tbody>";
+  for (const c of rows) {
+    h += `<tr><td>${c}${catType(c)==="transfer"?" *":""}</td>`;
+    for (const m of months) {
+      const v = byMonth[c]?.[m]||0;
+      h += `<td class="${v>0?'pos':v<0?'neg':''}">${v? fmt(v):""}</td>`;
+    }
+    h += `<td class="${net[c]>0?'pos':'neg'}"><b>${fmt(net[c])}</b></td></tr>`;
+  }
+  h += "</tbody>";
+  $("matrix").innerHTML = h;
+}
+function renderTxns() {
+  const q = $("q").value.toLowerCase(), fc = $("fCat").value;
+  const rows = TXNS.filter(inRange)
+    .filter(t => (!fc || t.cat===fc) && (!q || t.desc.toLowerCase().includes(q)))
+    .slice().reverse().slice(0,500);
+  let h = "<thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>";
+  for (const t of rows)
+    h += `<tr><td>${t.d}</td><td style="text-align:left;max-width:520px;overflow:hidden;text-overflow:ellipsis">${t.desc}</td><td style="text-align:left">${t.cat}</td><td class="${t.amt>0?'pos':'neg'}">${fmt2(t.amt)}</td></tr>`;
+  $("txns").innerHTML = h + "</tbody>";
+}
+</script>
+</body>
+</html>

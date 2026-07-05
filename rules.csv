@@ -1,0 +1,229 @@
+pattern,category
+TEXAS TECH UNIVE DES:PAYROLL,Paycheck - Texas Tech
+TEXAS TECH UNIVE DES:INVOICE,Paycheck - Texas Tech
+LADYBIRD,Income - LadyBird
+NATCHL BOOGIE,Income - Music Gigs
+GUSTO,Income - Other
+CM FURR LLC,Income - Other
+Zelle payment from,Income - Other
+BKOFAMERICA MOBILE,Income - Deposits
+VENMO,Income - Other
+Bruin v BANA,Income - Other
+BofA Rewards,Income - Other
+ROUNDPOINT,Mortgage
+ABUNDANCE ENERGY,Utilities
+ATMOS ENERGY,Utilities
+^COLU ,Utilities
+CITY OF LUBBOCK,Utilities
+OPTIMUM,Phone & Internet
+VZWRLSS,Phone & Internet
+VERIZON WRL,Phone & Internet
+PRIMROSE SCHOOL,Childcare & Kids
+CARTER'S,Childcare & Kids
+SCHOLASTIC,Childcare & Kids
+MARKET STREET,Groceries
+H-E-B,Groceries
+HEB CURBSIDE,Groceries
+UNITED SUPERMA,Groceries
+SPROUTS,Groceries
+FOOD KING,Groceries
+WAL-MART,Groceries
+WM SUPERC,Groceries
+WWW COSTCO COM,Shopping
+COSTCO WHSE,Groceries
+SPECS #,Groceries
+UNITED EXPRESS,Gas & Auto
+QUICK TRACK,Gas & Auto
+MURPHY EXPRESS,Gas & Auto
+SEI FUELS,Gas & Auto
+LONE STAR SUDS,Gas & Auto
+MCGAVOCKNISSAN,Gas & Auto
+7-ELEVEN,Gas & Auto
+DK STORE,Gas & Auto
+ALON DK,Gas & Auto
+EZ MART,Gas & Auto
+CIRCLE K,Gas & Auto
+CHEVRON,Gas & Auto
+BOLTON OIL,Gas & Auto
+LUBBOCK VEHREG,Gas & Auto
+COOKSG,Gas & Auto
+J&B COFFEE,Dining & Coffee
+J & B COFFEE,Dining & Coffee
+EINSTEIN,Dining & Coffee
+ROSAS CAFE,Dining & Coffee
+SAMS PLACE,Dining & Coffee
+CHICK-FIL-A,Dining & Coffee
+PIZZA HUT,Dining & Coffee
+Taco Villa,Dining & Coffee
+MCDONALD,Dining & Coffee
+STARBUCKS,Dining & Coffee
+burrito tower,Dining & Coffee
+CAPITAL PIZZA,Dining & Coffee
+STELLA'S,Dining & Coffee
+DAIRY QUEEN,Dining & Coffee
+IKE'S WOODFIRE,Dining & Coffee
+GOODLINE BREWING,Dining & Coffee
+BRULEE BAKERY,Dining & Coffee
+TEA2GO,Dining & Coffee
+HTEAO,Dining & Coffee
+HOLLYS DRIVE,Dining & Coffee
+RISE N SHINE,Dining & Coffee
+DONUT,Dining & Coffee
+WHATABURGER,Dining & Coffee
+SONIC DRIVE,Dining & Coffee
+RAISING CANE,Dining & Coffee
+SUBWAY,Dining & Coffee
+CHIPOTLE,Dining & Coffee
+TST\*,Dining & Coffee
+TEXAS STAR REFRES,Dining & Coffee
+HONORS HALL,Dining & Coffee
+RAWLS COLLEG,Dining & Coffee
+OVG Texas Tech,Dining & Coffee
+BLUE SKY,Dining & Coffee
+BAREBELLS,Dining & Coffee
+LAS BRISAS,Dining & Coffee
+THAI PEPPER,Dining & Coffee
+JAZZ A LOUISIANA,Dining & Coffee
+DAVES HOT CHICKEN,Dining & Coffee
+CAST IRON GRILL,Dining & Coffee
+Popeyes,Dining & Coffee
+DOORDASH,Dining & Coffee
+redsandroaster,Dining & Coffee
+FLATTRACKCOFFEE,Dining & Coffee
+C BOYS,Dining & Coffee
+LOWE'S,Home & Garden
+LOWES,Home & Garden
+HOME DEPOT,Home & Garden
+HOMEDEPOT,Home & Garden
+NST THE HOME D,Home & Garden
+STARLITHOME,Home & Garden
+CBM CONSTRUCTION,Home & Garden
+DRUM BROTHERS,Home & Garden
+TERMINIX,Home & Garden
+WIMBERLEY ACE,Home & Garden
+CRATE AND BARREL,Home & Garden
+DUTCHHOUSEOFPLANTS,Home & Garden
+COURTYARD BY MARR,Travel
+UPSTAIRS INN,Travel
+HOTEL,Travel
+TA SWEETWATER,Travel
+^UBER,Travel
+DEPOP,Shopping
+TARGET,Shopping
+AMAZON,Shopping
+AMZN,Shopping
+Etsy,Shopping
+PAYPAL,Shopping
+ADIDAS,Shopping
+Birkenstock,Shopping
+REFORMATION,Shopping
+KATIEWOODY,Shopping
+CLOTHIN2KLS,Shopping
+DOLLAR GENERAL,Shopping
+FAMILY DOLLAR,Shopping
+SP CHARLIE HUSTLE,Shopping
+Walmart.com,Shopping
+EXPRESS#,Shopping
+TJMAXX,Shopping
+DILLARD,Shopping
+OLD NAVY,Shopping
+KOHLS,Shopping
+MARSHALLS,Shopping
+HOT TOPIC,Shopping
+DRMARTENS,Shopping
+CARHARTT,Shopping
+SHEPLERS,Shopping
+TIDDIES,Shopping
+PullandBear,Shopping
+MECHANICAL KEYBOARD,Shopping
+PRINTIFY,Shopping
+WALGREENS,Health & Pharmacy
+CVS/PHARMACY,Health & Pharmacy
+DRUG EMPORIUM,Health & Pharmacy
+NWS DRUG,Health & Pharmacy
+HIGHLAND PHARMACY,Health & Pharmacy
+FYZICAL,Health & Pharmacy
+REFLEXOLOGY,Health & Pharmacy
+^UMC,Health & Pharmacy
+UMCONLINEPAY,Health & Pharmacy
+UMCPHYSICIANS,Health & Pharmacy
+HSC-LBK,Health & Pharmacy
+Journeys Counseling,Health & Pharmacy
+Gristy Cleaners,Personal Care
+CLEANE,Personal Care
+SALON,Personal Care
+SEPHORA,Personal Care
+LA FACIALI,Personal Care
+Pet Supplies,Pets
+PETSMART,Pets
+PETCO,Pets
+ALLSTATE,Insurance
+Spotify,Subscriptions
+SIRIUSXM,Subscriptions
+APPLE.COM/BILL,Subscriptions
+YouTubePremium,Subscriptions
+GOOGLE ONE,Subscriptions
+JUSTTHERECIPE,Subscriptions
+NETFLIX,Subscriptions
+HULU,Subscriptions
+DOLLARSHAVECLUB,Subscriptions
+RING BASIC,Subscriptions
+Dropbox,Subscriptions
+PADDLE.NET,Subscriptions
+CINEMARK,Entertainment
+Ticketmaster,Entertainment
+AXS.COM,Entertainment
+DELL DIAMOND,Entertainment
+REITHOFFER,Entertainment
+Zelle payment to,Payments to People
+CASH APP,Payments to People
+GoFundMe,Gifts & Donations
+YOUNG LIFE,Gifts & Donations
+CHASE CREDIT CRD,Credit Card Payments
+CITI AUTOPAY,Credit Card Payments
+AMERICAN FUNDS,Savings & Investments
+^LPL,Savings & Investments
+BETTERMENT,Savings & Investments
+BRK 5781,Savings & Investments
+BRK 4455,Savings & Investments
+Kalshi,Savings & Investments
+Agent Assisted transfer,Savings & Investments
+TEXAS TECH FEDER,Transfers - TTFCU
+TTCU XFER,Transfers - TTFCU
+BOFA FIN CTR,Transfers - Other
+BANK OF AMERICA,Transfers - Other
+^Check \d,Checks & Cash
+BKOFAMERICA BC,Checks & Cash
+PEOPLES BANK,Checks & Cash
+SUNOCO,Gas & Auto
+CEFCO,Gas & Auto
+PHILLIPS 66,Gas & Auto
+SHELL OIL,Gas & Auto
+ALLSUPS,Gas & Auto
+MIGHTY WASH,Gas & Auto
+VALERO,Gas & Auto
+TX DPS,Gas & Auto
+CHICK FIL A,Dining & Coffee
+NIRVANA BURGER,Dining & Coffee
+SHACK BBQ,Dining & Coffee
+SCOOTER'S COFFEE,Dining & Coffee
+FREDDY'S,Dining & Coffee
+HAYASHI,Dining & Coffee
+DOS COMPADRES,Dining & Coffee
+MAD ROOSTERS,Dining & Coffee
+GLAZED HONEY HAM,Dining & Coffee
+HYATT,Travel
+MMS-PROV,Health & Pharmacy
+PROVID,Health & Pharmacy
+1PASSWORD,Subscriptions
+NAME-CHEAP,Subscriptions
+DOLLARTREE,Shopping
+BOMBAS,Shopping
+VF Outdoor,Shopping
+STUDY ABROAD,Fees & Other
+SWP\*PROFESSIONAL,Fees & Other
+^TEXAS TECH ,Fees & Other
+FEDEX,Fees & Other
+^SP ,Shopping
+^SQ \*,Dining & Coffee
+^WP\*,Shopping
