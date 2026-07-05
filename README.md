@@ -4,8 +4,6 @@ Passcode-protected spending dashboard for GitHub Pages. Only the encrypted
 `data.enc` and `index.html` get published — transaction data is unreadable
 without the passphrase.
 
-**Current passphrase: `furr2026`** — change it (see below) before publishing.
-
 ## Folder layout
 
 ```
