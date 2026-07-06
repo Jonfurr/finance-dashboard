@@ -188,8 +188,8 @@ BRK 5781,Savings & Investments
 BRK 4455,Savings & Investments
 Kalshi,Savings & Investments
 Agent Assisted transfer,Savings & Investments
-TEXAS TECH FEDER,Transfers - TTFCU
-TTCU XFER,Transfers - TTFCU
+TEXAS TECH FEDER,Paycheck - TTFCU
+TTCU XFER,Paycheck - TTFCU
 BOFA FIN CTR,Transfers - Other
 BANK OF AMERICA,Transfers - Other
 ^Check \d,Checks & Cash
